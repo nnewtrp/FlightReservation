@@ -97,16 +97,7 @@ export default class FindAirportScreen extends React.Component {
     if (this.state.airportData){
       const airportData = this.state.airportData.airports;
       var inCountryAirportData = airportData.filter((airport) => airport.country_code === "TH");
-      var nearbyAirportData = [];
-      for (let i = 0; i < inCountryAirportData.length; i++){
-        if (          
-          inCountryAirportData[i].hasOwnProperty("iata_code")
-          && inCountryAirportData[i].hasOwnProperty("icao_code")
-          && this._isWithinRadius(inCountryAirportData[i].lat, inCountryAirportData[i].lng)
-        ) {
-          nearbyAirportData.push(inCountryAirportData[i]);
-        }
-      }
+      var nearbyAirportData = inCountryAirportData.filter((airport) => this._isWithinRadius(airport.lat, airport.lng));
       return (
         <View style={styles.subContainer}>
           <ScrollView style={{flex:1}}>

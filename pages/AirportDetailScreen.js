@@ -6,6 +6,7 @@ import { Platform, StyleSheet, Text, View,
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import { Margin } from 'react-native-sketchbook';
+import { SliderBox } from "react-native-image-slider-box";
 
 import AirportDataAPI from './api/AirportDataAPI';
 import UnsplashAPI from './api/UnsplashAPI';
@@ -16,7 +17,7 @@ export default class AirportDetailScreen extends React.Component {
     super(props);
     this.state = {
       airportData: {},
-      image: {uri:'https://img.freepik.com/free-vector/modern-airport-terminal-runaway-cartoon-vector_81522-1893.jpg?w=2000'},
+      image: [],
     };
   }
 
@@ -39,12 +40,23 @@ export default class AirportDetailScreen extends React.Component {
 
   _getAirportImage() {
     const { res_data } = this.props.route.params;
-    UnsplashAPI(res_data.name).then((data) => {
+    if (!res_data.iata_code) {
       this.setState({
-        image: { uri: data.results[0].urls.full },
+        image: [require("./images/airport2.webp")],
       })
-      console.log(data.results[1].urls.full)
-    });
+    } else if (!res_data.icao_code) {
+      this.setState({
+        image: [require("./images/airport1.webp")],
+      })
+    } else {
+      UnsplashAPI(res_data.name).then((data) => {
+        const image = [data.results[0].urls.full, data.results[1].urls.full];
+        this.setState({
+          image: image,
+        })
+        console.log(data.results[0].urls.full, data.results[1].urls.full, data.results[2].urls.full)
+      });
+    }
   }
 
   getCountryName(country_code) {
@@ -69,7 +81,7 @@ export default class AirportDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={this.state.image} />
+          <SliderBox images={this.state.image} autoplay={true} circleLoop={true} />
         </View>
         <View style={styles.subContainer}>
           <ScrollView style={{flex:1}}>

@@ -3,9 +3,6 @@ import { Platform, StyleSheet, Text, View,
   TouchableHighlight, TextInput, Image, Alert,
   ScrollView, Dimensions, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-
 import Airport from './components/Airport'
 
 const RADIUS = 50;

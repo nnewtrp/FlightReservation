@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor='#BBBBBB'
-              onPress={() => console.log("Find Airlines")}
+              onPress={() => this.props.navigation.navigate('FindAirline',{location: this.state.location, country: this.state.country})}
               style={styles.subButton}
             >
               <View style={styles.subButtonColumn}>

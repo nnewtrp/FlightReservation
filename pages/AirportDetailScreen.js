@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 import { Margin } from 'react-native-sketchbook';
 
 import AirportDataAPI from './api/AirportDataAPI';
+import UnsplashAPI from './api/UnsplashAPI';
 
 export default class AirportDetailScreen extends React.Component {
 
@@ -15,11 +16,13 @@ export default class AirportDetailScreen extends React.Component {
     super(props);
     this.state = {
       airportData: {},
+      image: {uri:'https://img.freepik.com/free-vector/modern-airport-terminal-runaway-cartoon-vector_81522-1893.jpg?w=2000'},
     };
   }
 
   componentDidMount() {
     this._getAirportData();
+    this._getAirportImage();
   }
 
   _getAirportData() {
@@ -31,6 +34,16 @@ export default class AirportDetailScreen extends React.Component {
         airportData: data,
       })
       console.log(data)
+    });
+  }
+
+  _getAirportImage() {
+    const { res_data } = this.props.route.params;
+    UnsplashAPI(res_data.name).then((data) => {
+      this.setState({
+        image: { uri: data.results[0].urls.full },
+      })
+      console.log(data.results[1].urls.full)
     });
   }
 
@@ -55,6 +68,9 @@ export default class AirportDetailScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={this.state.image} />
+        </View>
         <View style={styles.subContainer}>
           <ScrollView style={{flex:1}}>
             <Text style={styles.detailText}>
@@ -92,10 +108,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  imageContainer: {
+    width: Dimensions.get("window").width,
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+  },
   subContainer: {
     padding: 5,
     width: Dimensions.get("window").width,
-    flex:1
+    flex: 3,
   },
   detailText: {
     fontSize: 20,

@@ -8,6 +8,8 @@ import * as Location from 'expo-location';
 
 import SignupLogin from './Auth'
 
+import OpenWeatherMapAPI from './api/OpenWeatherMapAPI';
+
 export default class HomeScreen extends React.Component {
 
   constructor(props) {
@@ -18,8 +20,10 @@ export default class HomeScreen extends React.Component {
         latitude: null,
         longitude: null,
       },
+      country: null,
+      city: null,
       errorMessage: null,
-      isLoggedIn: false,
+      isLoggedIn: true,
     };
     // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
@@ -59,6 +63,13 @@ export default class HomeScreen extends React.Component {
 
     if (this.state.errorMessage) { console.log(this.state.errorMessage) }
 
+    OpenWeatherMapAPI(lat, lon).then((data) => {
+      this.setState({
+        country: data[0].country,
+        city: data[0].state,
+      })
+      console.log(this.state.country, this.state.city)
+    });
   };
 
   showHome() {
@@ -66,6 +77,7 @@ export default class HomeScreen extends React.Component {
       <>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Hi, Teerapat</Text>
+          <Text style={styles.currentPlace}>{this.state.city}, {this.state.country}</Text>
         </View>
         <View style={styles.container}>
           <TouchableHighlight
@@ -91,7 +103,7 @@ export default class HomeScreen extends React.Component {
           <View style={styles.subContainer}>
             <TouchableHighlight
               underlayColor='#BBBBBB'
-              onPress={() => this.props.navigation.navigate('FindAirport',{location: this.state.location})}
+              onPress={() => this.props.navigation.navigate('FindAirport',{location: this.state.location, country: this.state.country})}
               style={styles.subButton}
             >
               <View style={styles.subButtonColumn}>
@@ -139,13 +151,21 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   // Title
   titleContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 24,
     marginVertical: 5,
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'left',
+    flex: 1,
+  },
+  currentPlace: {
+    fontSize: 14,
+    textAlign: 'right',
+    flex: 1,
   },
   // Button
   container: {

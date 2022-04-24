@@ -94,9 +94,10 @@ export default class FindAirportScreen extends React.Component {
   }
 
   showNearby() {
+    const { country } = this.props.route.params;
     if (this.state.airportData){
       const airportData = this.state.airportData.airports;
-      var inCountryAirportData = airportData.filter((airport) => airport.country_code === "TH");
+      var inCountryAirportData = airportData.filter((airport) => airport.country_code === country);
       var nearbyAirportData = inCountryAirportData.filter((airport) => this._isWithinRadius(airport.lat, airport.lng));
       return (
         <View style={styles.subContainer}>

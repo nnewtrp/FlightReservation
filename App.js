@@ -31,6 +31,7 @@ import HomeScreen from './pages/HomeScreen'
 import FindAirportScreen from './pages/FindAirportScreen';
 import FindAirlineScreen from './pages/FindAirlineScreen';
 import AirportDetailScreen from './pages/AirportDetailScreen';
+import AirlineDetailScreen from './pages/AirlineDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -94,6 +95,20 @@ export default class App extends React.Component {
                 fontWeight: 'bold',
               },
             }}
+          />
+          <Stack.Screen
+            name="AirlineDetail"
+            component={AirlineDetailScreen}
+            options={ ({ route }) => ({
+              title: route.params.res_data.name,
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }) }
           />
         </Stack.Navigator>
       </NavigationContainer>

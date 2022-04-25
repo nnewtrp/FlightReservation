@@ -3,12 +3,8 @@ import { Platform, StyleSheet, Text, View,
   TouchableHighlight, TextInput, Image, Alert,
   ScrollView, Dimensions, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
 import { Margin } from 'react-native-sketchbook';
 import { SliderBox } from "react-native-image-slider-box";
-
-import AirHexAPI from './api/AirHexAPI';
 
 export default class AirlineDetailScreen extends React.Component {
 
@@ -20,9 +16,12 @@ export default class AirlineDetailScreen extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this._getAirlineImage;
-  // }
+  componentDidMount() {
+    const { onError } = this.props.route.params;
+    if (onError) {
+      this.state.image.push(require("./images/image_not_found_logo_long.png"));
+    }
+  }
 
   _getAirlineImage() {
     const { res_data } = this.props.route.params;
@@ -31,23 +30,11 @@ export default class AirlineDetailScreen extends React.Component {
                   : "https://content.airhex.com/content/logos/airlines_" + res_data.iata_code + "_300_150_r.png?proportions=keep";
 
     this.state.image.push(logoURI);
-    console.log(logoURI);
   }
 
-  // _getLogoURI() {
-  //   const { res_data } = this.props.route.params;
-  //   const codeType = res_data.hasOwnProperty("icao_code") && !res_data.icao_code.includes("*") ? "icao" : "iata";
-  //   const airlineCode = res_data.hasOwnProperty("icao_code") && !res_data.icao_code.includes("*")
-  //                       ? res_data.icao_code : res_data.iata_code;
-  //   const logo = null;
-  //   AirHexAPI(codeType, airlineCode).then((data) => {
-  //     logo = data.hasOwnProperty("logo_rectangle") ? data.logo_rectangle : require("./images/image_not_found_logo.png")
-  //   });
-  //   this.state.image.push(logo);
-  // }
-
   render() {
-    this._getAirlineImage()
+    const { onError } = this.props.route.params;
+    if (!onError) { this._getAirlineImage() }
     const { res_data } = this.props.route.params;                
     const iata_code = res_data.hasOwnProperty("iata_code") ? res_data.iata_code : "-";
     const icao_code = res_data.hasOwnProperty("icao_code") ? res_data.icao_code : "-";
@@ -55,7 +42,7 @@ export default class AirlineDetailScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <SliderBox images={this.state.image} autoplay={true} circleLoop={true} />
+          <SliderBox images={this.state.image} resizeMethod={'resize'} resizeMode={'contain'} autoplay={true} circleLoop={true} />
         </View>
         <View style={styles.subContainer}>
           <ScrollView style={{flex:1}}>
@@ -88,11 +75,11 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: Dimensions.get("window").width,
     flex: 1,
+    backgroundColor: '#fff',
   },
   image: {
     flex: 1,
     width: Dimensions.get("window").width,
-    resizeMode: "stretch",
   },
   subContainer: {
     padding: 5,

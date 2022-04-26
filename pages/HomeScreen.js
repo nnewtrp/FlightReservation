@@ -7,6 +7,7 @@ import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 
 import SignupLogin from './Auth'
+import UserInfo from './UserInfo'
 
 import OpenWeatherMapAPI from './api/OpenWeatherMapAPI';
 
@@ -24,6 +25,7 @@ export default class HomeScreen extends React.Component {
       city: null,
       errorMessage: null,
       isLoggedIn: true,
+      haveUserInfo: false,
     };
     // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
@@ -133,6 +135,18 @@ export default class HomeScreen extends React.Component {
     )
   }
 
+  showUserInfo() {
+    return (
+      <UserInfo />
+    )
+  }
+
+  showAfterLoggedIn() {
+    return (
+      this.state.haveUserInfo ? this.showHome() : this.showUserInfo()
+    )
+  }
+
   loginSuccess() {
     this.setState({
       isLoggedIn: true
@@ -142,7 +156,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{flex:1}}>
-        {this.state.isLoggedIn ? this.showHome() : this.showLogin()}
+        {this.state.isLoggedIn ? this.showAfterLoggedIn() : this.showLogin()}
       </View>
     );
   }

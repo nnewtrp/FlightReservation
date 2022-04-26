@@ -11,7 +11,7 @@ export default class FindAirlineScreen extends React.Component {
     super(props);
     this.state = {
       searchText: '',
-      isShowRecommend: false,
+      isShowRecommend: true,
       airlineData: require('./data/airlines_res.json'),
       searchResult: [],
     };
@@ -39,39 +39,38 @@ export default class FindAirlineScreen extends React.Component {
     }
   }
 
-//   showRecommend() {
-//     const { country } = this.props.route.params;
-//     if (this.state.airlineData){
-//       const airlineData = this.state.airlineData.airlines;
-//       var inCountryAirlineData = airlineData.filter((airline) => airline.country_code === country);
-//       var recommendAirlineData = inCountryAirlineData.filter((airline) => this._isWithinRadius(airline.lat, airline.lng));
-//       return (
-//         <View style={styles.subContainer}>
-//           <ScrollView style={{flex:1}}>
-//             {recommendAirlineData.map((res_data,i) => {
-//               return (
-//                 <Airline
-//                   key={i}
-//                   res_data={res_data}
-//                   navigation={this.props.navigation}
-//                 />
-//               )
-//             })}
-//             {/* workaround for scrollview cutoff at the bottom */}
-//             <Image source={require('./images/bottom_filler.png')}/>
-//           </ScrollView>
-//         </View>
-//       )
-//     }
-//     else {
-//       return (
-//         <View style={styles.subContainer}>
-//           <Text>Please Wait</Text>
-//           <ActivityIndicator size="large" color="#0000ff" />
-//         </View>
-//       )
-//     }
-//   }
+  showRecommend() {
+    if (this.state.airlineData){
+      const recommendListCode = ["QTR", "ETD", "DLH", "THA", "KLM", "JAL", "UAE"];
+      const airlineData = this.state.airlineData.airlines;
+      var recommendAirlineData = airlineData.filter((airline) => recommendListCode.includes(airline.icao_code));
+      return (
+        <View style={styles.subContainer}>
+          <ScrollView style={{flex:1}}>
+            {recommendAirlineData.map((res_data,i) => {
+              return (
+                <Airline
+                  key={i}
+                  res_data={res_data}
+                  navigation={this.props.navigation}
+                />
+              )
+            })}
+            {/* workaround for scrollview cutoff at the bottom */}
+            <Image source={require('./images/bottom_filler.png')}/>
+          </ScrollView>
+        </View>
+      )
+    }
+    else {
+      return (
+        <View style={styles.subContainer}>
+          <Text>Please Wait</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )
+    }
+  }
 
   showSearchResult() {
     if (this.state.searchResult[0]){

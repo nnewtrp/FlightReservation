@@ -81,6 +81,9 @@ export default class SignupLogin extends React.Component {
     return (
       <View>
         <View style={styles.group}>
+          <Text style={[styles.title, {fontWeight: 'bold', fontSize: 40}]}>Sign Up</Text>
+        </View>
+        <View style={styles.group}>
           <Text style={styles.title}>Email</Text>
           <TextInput style={styles.input}
             value={this.state.email}
@@ -104,14 +107,17 @@ export default class SignupLogin extends React.Component {
         </View>
         <View style={styles.center}>
           <View style={styles.group}>
-            <TouchableOpacity onPress={() => {this.toggleShowLogin();}}>
-              <Text style={styles.signupText}>Login</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#EA7838'}]}
+              onPress={() => {this.doSignup();}}>
+              <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
           </View>
+          <View style={{width: Dimensions.get("window").width - 40, height: 1, backgroundColor: 'black', marginBottom: 10, marginTop: 30}} />
           <View style={styles.group}>
-            <TouchableOpacity style={styles.button}
-              onPress={() => {this.doSignup()}}>
-              <Text style={styles.buttonText}>Signup</Text>
+            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10}]}>Already have an account?</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#48D0FB'}]}
+              onPress={() => {this.toggleShowLogin();}}>
+              <Text style={styles.buttonText}>Go To Login Page</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -122,6 +128,9 @@ export default class SignupLogin extends React.Component {
   showLogin() {
     return (
       <View>
+        <View style={styles.group}>
+          <Text style={[styles.title, {fontWeight: 'bold', fontSize: 40}]}>TICKETA Login</Text>
+        </View>
         <View style={styles.group}>
           <Text style={styles.title}>Email</Text>
           <TextInput style={styles.input}
@@ -138,17 +147,19 @@ export default class SignupLogin extends React.Component {
         </View>
         <View style={styles.center}>
           <View style={styles.group}>
-            <TouchableOpacity onPress={() => {this.toggleShowSignup();}}>
-              <Text style={styles.signupText}>Signup</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.group}>
-            <TouchableOpacity style={styles.button}
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#48D0FB'}]}
               onPress={() => {this.doLogin();}}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
-          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
+          <View style={{width: Dimensions.get("window").width - 40, height: 1, backgroundColor: 'black', marginBottom: 10, marginTop: 30}} />
+          <View style={styles.group}>
+            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10}]}>Don't have any account?</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#EA7838'}]}
+              onPress={() => {this.toggleShowSignup();}}>
+              <Text style={styles.buttonText}>Go To Signup Page</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -157,7 +168,10 @@ export default class SignupLogin extends React.Component {
   render() {
     return (
       <View style={styles.containerLogin}>
-        {this.state.showLogin ? this.showLogin() : this.showSignup()}
+        <ScrollView style={{flex:1}}>
+          {this.state.showLogin ? this.showLogin() : this.showSignup()}
+          <View style={{padding: 30}} />
+        </ScrollView>
       </View>
     );
   }
@@ -186,9 +200,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     padding: 15,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 30,
     width: Dimensions.get("window").width - 40,
   },
@@ -196,6 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'white',
   },
   input: {
     padding: 10,
@@ -208,8 +223,4 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center'
   },
-  signupText : {
-    fontSize: 20,
-    color: 'blue'
-  }
 });

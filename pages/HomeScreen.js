@@ -103,7 +103,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <TouchableHighlight
             underlayColor='#BBBBBB'
-            onPress={() => console.log("Booking")}
+            onPress={() => this.props.navigation.navigate('FlightSearch')}
             style={styles.button}
           >
             <View style={styles.buttonRow}>

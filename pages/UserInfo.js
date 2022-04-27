@@ -29,7 +29,7 @@ function UserInfo(props) {
       setDOB(DOB);
       setDatePicker(false);
     }
- };
+  };
 
  function _writeDB() {
   push(ref(getDatabase(), 'userinfo/'), {
@@ -168,9 +168,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#48D0FB',
     padding: 15,
-    borderWidth: 1,
     borderRadius: 30,
     width: Dimensions.get("window").width - 40,
   },
@@ -178,6 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'white'
   },
   input: {
     padding: 10,
@@ -194,16 +194,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   DOBButton: {
-    borderWidth:1,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#EA7838',
     borderRadius: 5,
     flex: 1,
     marginHorizontal: 5
   },
   DOBText: {
-    marginVertical: 8,
+    marginVertical: 10,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   }
 });
 

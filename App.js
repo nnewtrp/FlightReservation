@@ -28,10 +28,14 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 import HomeScreen from './pages/HomeScreen'
+
 import FindAirportScreen from './pages/FindAirportScreen';
 import FindAirlineScreen from './pages/FindAirlineScreen';
+
 import AirportDetailScreen from './pages/AirportDetailScreen';
 import AirlineDetailScreen from './pages/AirlineDetailScreen';
+
+import FlightSearchScreen from './pages/FlightSearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +50,21 @@ export default class App extends React.Component {
             options={{
               title: 'TICKETA Flight Booking',
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#48D0FB',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="FlightSearch"
+            component={FlightSearchScreen}
+            options={{
+              title: 'Flight Search',
+              headerStyle: {
+                backgroundColor: '#48D0FB',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -60,7 +78,7 @@ export default class App extends React.Component {
             options={{
               title: 'Airport Search',
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#FB4A4A',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -74,7 +92,7 @@ export default class App extends React.Component {
             options={ ({ route }) => ({
               title: route.params.res_data.name,
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#FB4A4A',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -88,7 +106,7 @@ export default class App extends React.Component {
             options={{
               title: 'Airline Search',
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#FB4A4A',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -102,7 +120,7 @@ export default class App extends React.Component {
             options={ ({ route }) => ({
               title: route.params.res_data.name,
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: '#FB4A4A',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {

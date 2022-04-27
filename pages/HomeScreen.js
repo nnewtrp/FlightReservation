@@ -3,6 +3,9 @@ import { Platform, StyleSheet, Text, View,
   TouchableHighlight, TextInput, Image, Alert,
   ScrollView, Dimensions, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
+import { getDatabase, ref, onValue, get, push, set } from 'firebase/database';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 
@@ -15,7 +18,7 @@ export default class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.restaurantRef = ref(getDatabase(), 'restaurant/');
+    this.UserInfoRef = ref(getDatabase(), 'userinfo/');
     this.state = {
       location: {
         latitude: null,
@@ -24,12 +27,15 @@ export default class HomeScreen extends React.Component {
       country: null,
       city: null,
       errorMessage: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
       haveUserInfo: false,
+      UserInfoData: null,
+      thisUserInfoKey: null,
     };
     // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
-    // this._readDB();
+    this.submitSuccess = this.submitSuccess.bind(this);
+    this._readDB();
   }
 
   componentDidMount() {
@@ -73,6 +79,19 @@ export default class HomeScreen extends React.Component {
       console.log(this.state.country, this.state.city)
     });
   };
+
+  _readDB() {
+    get(this.UserInfoRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        this.setState({UserInfoData: snapshot.val()})
+        // console.log(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   showHome() {
     return (
@@ -131,14 +150,20 @@ export default class HomeScreen extends React.Component {
 
   showLogin() {
     return (
-      <SignupLogin loginCB={this.loginSuccess}/>
+      <SignupLogin loginCB={this.loginSuccess} />
     )
   }
 
   showUserInfo() {
     return (
-      <UserInfo />
+      <UserInfo submitCB={this.submitSuccess} />
     )
+  }
+
+  submitSuccess(bool) {
+    this.setState({
+      haveUserInfo: bool
+    })
   }
 
   showAfterLoggedIn() {
@@ -149,8 +174,17 @@ export default class HomeScreen extends React.Component {
 
   loginSuccess() {
     this.setState({
-      isLoggedIn: true
+      isLoggedIn: true,
     })
+    const keys = this.state.UserInfoData ? Object.keys(this.state.UserInfoData) : [];
+    const userInfoCheck = keys.filter((key) => this.state.UserInfoData[key].email.includes(getAuth().currentUser.email));
+    console.log(userInfoCheck);
+    if (userInfoCheck[0]) {
+      this.submitSuccess(true);
+      this.setState({ thisUserInfoKey: userInfoCheck[0] })
+    } else {
+      this.submitSuccess(false);
+    }
   }
 
   render() {

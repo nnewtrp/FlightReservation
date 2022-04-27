@@ -9,7 +9,7 @@ export default class SignupLogin extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
       confirmPassword: '',
       showLogin: true,
@@ -30,10 +30,18 @@ export default class SignupLogin extends React.Component {
 
   doLogin() {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, this.state.username, this.state.password).then( () => {
+    signInWithEmailAndPassword(auth, this.state.email, this.state.password).then( () => {
       console.log("login successful");
       console.log(auth.currentUser.email);
       this.props.loginCB();
+      // const keys = this.props.UserData ? Object.keys(this.props.UserData) : [];
+      // const userInfoCheck = keys.filter((key) => this.props.UserData[key].email.includes(auth.currentUser.email));
+      // console.log(userInfoCheck);
+      // if (userInfoCheck[0]) {
+      //   this.props.submitCB(true);
+      // } else {
+      //   this.props.submitCB(false);
+      // }
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -53,9 +61,9 @@ export default class SignupLogin extends React.Component {
     if (password === confirmPassword){
       // do signup
       const auth = getAuth();
-      createUserWithEmailAndPassword(auth, this.state.username, this.state.password).then( () => {
+      createUserWithEmailAndPassword(auth, this.state.email, this.state.password).then( () => {
         console.log("created new user successful");
-        this.toggleShowLogin(); // show login page
+        this.doLogin(); // switch to login page
       })
       .catch(function(error) {
         // Handle Errors here.
@@ -73,10 +81,10 @@ export default class SignupLogin extends React.Component {
     return (
       <View>
         <View style={styles.group}>
-          <Text style={styles.title}>Username</Text>
+          <Text style={styles.title}>Email</Text>
           <TextInput style={styles.input}
-            value={this.state.username}
-            onChangeText={(username) => this.setState({username})}/>
+            value={this.state.email}
+            onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.group}>
           <Text style={styles.title}>Password</Text>
@@ -115,10 +123,10 @@ export default class SignupLogin extends React.Component {
     return (
       <View>
         <View style={styles.group}>
-          <Text style={styles.title}>Username</Text>
+          <Text style={styles.title}>Email</Text>
           <TextInput style={styles.input}
-            value={this.state.username}
-            onChangeText={(username) => this.setState({username})}/>
+            value={this.state.email}
+            onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.group}>
           <Text style={styles.title}>Password</Text>
@@ -136,10 +144,11 @@ export default class SignupLogin extends React.Component {
           </View>
           <View style={styles.group}>
             <TouchableOpacity style={styles.button}
-              onPress={() => {this.doLogin()}}>
+              onPress={() => {this.doLogin();}}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1}} />
         </View>
       </View>
     );
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    padding: 10
+    padding: 10,
   },
   containerLogin: {
     flex: 1,
@@ -176,12 +185,17 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   button: {
+    marginTop: 10,
     backgroundColor: 'lightblue',
-    padding: 20,
-    borderWidth: 1
+    padding: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    width: Dimensions.get("window").width - 40,
   },
   buttonText: {
-    fontSize: 30
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   input: {
     padding: 10,

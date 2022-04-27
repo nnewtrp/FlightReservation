@@ -1,124 +1,153 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View, 
   TouchableHighlight, TextInput, Image, Alert,
   ScrollView, Dimensions, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+
 import { Heading, SubHeading, Margin, RadioButton, RadioButtonItem } from 'react-native-sketchbook'
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, onValue, get, push, set } from 'firebase/database';
+import { getAuth } from "firebase/auth";
 
-export default class UserInfo extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      titlename: '',
-      firstname: '',
-      lastname: '',
-      phone: '',
-      DOB: '',
-      nationality: '',
-      openDatePicker: false,
-    };
-  }
+function UserInfo(props) {
+  const [titlename, setTitlename] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [phone, setPhone] = useState('');
+  const [DOB, setDOB] = useState(new Date());
+  const [nationality, setNationality] = useState('');
+  const [openDatePicker, setDatePicker] = useState(false);
 
-  doSignup() {
-    // https://firebase.google.com/docs/auth/web/password-auth
-
-    // check if the two password fields match
-    const password = this.state.password;
-    const confirmPassword = this.state.confirmPassword;
-    if (password === confirmPassword){
-      // do signup
-      const auth = getAuth();
-      createUserWithEmailAndPassword(auth, this.state.username, this.state.password).then( () => {
-        console.log("created new user successful");
-        this.toggleShowLogin(); // show login page
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        console.log(error.code);
-        console.log(error.message);
-        alert(error.message);
-      });
+  const changeSelectedDate = (event, selectedDate) => {
+    if(selectedDate) {
+      const currentDate = selectedDate;
+      setDOB(currentDate);
+      setDatePicker(false);
+    } else {
+      setDOB(DOB);
+      setDatePicker(false);
     }
-    else {
-      alert("Password do not match !!!");
-    }
-  }
+ };
 
-  render() {
-    return (
-      <View style={styles.containerForm}>
-        <ScrollView style={{flex:1}}>
-          <View>
-            <Heading style={{color:'black'}}>Fill in your information</Heading>
-            <View style={styles.group}>
-              <View style={{flexDirection: 'row'}}>
-                <SubHeading style={styles.title}>Title Name:</SubHeading>
-                <RadioButton.Group value={this.state.titlename} onValueChange={(value) => this.setState({ titlename: value })}>
-                  <View style={styles.radio}>
-                    <RadioButtonItem value="Mr." label="Mr.    "/>
-                    <RadioButtonItem value="Ms." label="Ms.    "/>
-                    <RadioButtonItem value="Mrs." label="Mrs.    "/>
-                  </View>
-                </RadioButton.Group>
-              </View>
-            </View>
-            <View style={styles.group}>
-              <SubHeading style={styles.title}>First Name:</SubHeading>
-              <TextInput style={styles.input}
-                value={this.state.firstname}
-                onChangeText={(firstname) => this.setState({firstname: firstname})}
-              />
-            </View>
-            <View style={styles.group}>
-              <SubHeading style={styles.title}>Last Name:</SubHeading>
-              <TextInput style={styles.input}
-                value={this.state.lastname}
-                onChangeText={(lastname) => this.setState({lastname: lastname})}
-              />
-            </View>
-            <View style={styles.group}>
-              <SubHeading style={styles.title}>Phone No:</SubHeading>
-              <TextInput style={styles.input}
-                value={this.state.phone}
-                onChangeText={(phone) => this.setState({phone: phone})}
-              />
-            </View>
-            <View style={styles.group}>
-              <SubHeading style={styles.title}>Date of Birth:</SubHeading>
-              <View style={{flexDirection: 'row'}}>
-                <TextInput style={[styles.input, {flex: 2}]}
-                  editable = {false}
-                  placeholder="Tab a button to select DOB"
-                  value={this.state.DOB}
-                  onChangeText={(DOB) => this.setState({DOB: DOB})}
-                />
-                <TouchableOpacity style={styles.DOBButton} onPress={() => console.log("DOB")}>
-                  <Text style={styles.DOBText}>Select Date</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.group}>
-              <SubHeading style={styles.title}>Nationality:</SubHeading>
-              <TextInput style={styles.input}
-                value={this.state.nationality}
-                onChangeText={(nationality) => this.setState({nationality: nationality})}
-              />
-            </View>
-            <View style={styles.center}>
-              <View style={styles.group}>
-                <TouchableOpacity style={styles.button} onPress={() => {this.doSignup()}}>
-                  <Text style={styles.buttonText}>Signup</Text>
-                </TouchableOpacity>
-              </View>
+ function _writeDB() {
+  push(ref(getDatabase(), 'userinfo/'), {
+    email: getAuth().currentUser.email,
+    titlename: titlename,
+    firstname: firstname,
+    lastname: lastname,
+    phone: phone,
+    DOB: moment(DOB).format('DD/MM/YYYY').toString(),
+    nationality: nationality,
+  })
+  .then(() => {
+    // Data saved successfully!
+    console.log("Store data success")
+  })
+  .catch((error) => {
+    // The write failed...
+    console.log("Store Error")
+  });
+  setTitlename('');
+  setFirstname('');
+  setLastname('');
+  setPhone('');
+  setDOB(new Date());
+  setNationality('');
+}
+
+ function doSubmit() {
+  if (titlename && firstname && lastname && phone && DOB && nationality) {
+    _writeDB()
+    props.submitCB(true);
+  } else {
+    alert("Please fill in your information");
+  }
+ }
+
+  return (
+    <View style={styles.containerForm}>
+      <ScrollView style={{flex:1}}>
+        <View>
+          <Heading style={{color:'black'}}>Fill In Your Information</Heading>
+          <View style={styles.group}>
+            <View style={{flexDirection: 'row'}}>
+              <SubHeading style={styles.title}>Title Name:</SubHeading>
+              <RadioButton.Group value={titlename} onValueChange={(titlename) => setTitlename(titlename)}>
+                <View style={styles.radio}>
+                  <RadioButtonItem value="Mr." label="Mr.    "/>
+                  <RadioButtonItem value="Ms." label="Ms.    "/>
+                  <RadioButtonItem value="Mrs." label="Mrs.    "/>
+                </View>
+              </RadioButton.Group>
             </View>
           </View>
-          <View style={{padding: 30}} />
-        </ScrollView>
-      </View>
-    );
-  }
+          <View style={styles.group}>
+            <SubHeading style={styles.title}>First Name:</SubHeading>
+            <TextInput style={styles.input}
+              placeholder="Ex. John"
+              value={firstname}
+              onChangeText={(firstname) => setFirstname(firstname)}
+            />
+          </View>
+          <View style={styles.group}>
+            <SubHeading style={styles.title}>Last Name:</SubHeading>
+            <TextInput style={styles.input}
+              placeholder="Ex. Doe"
+              value={lastname}
+              onChangeText={(lastname) => setLastname(lastname)}
+            />
+          </View>
+          <View style={styles.group}>
+            <SubHeading style={styles.title}>Phone No:</SubHeading>
+            <TextInput style={styles.input}
+              placeholder="Ex. 089XXXXXXX"
+              value={phone}
+              onChangeText={(phone) => setPhone(phone)}
+            />
+          </View>
+          <View style={styles.group}>
+            <SubHeading style={styles.title}>Date of Birth:</SubHeading>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput style={[styles.input, {flex: 2}]}
+                placeholder="Tab a button to select DOB"
+                value={moment(DOB).format('DD/MM/YYYY').toString()}
+              />
+              <TouchableOpacity style={styles.DOBButton} onPress={() => setDatePicker(true)}>
+                <Text style={styles.DOBText}>Select Date</Text>
+              </TouchableOpacity>
+              {openDatePicker && (
+                <DateTimePicker
+                  value={DOB}
+                  mode={openDatePicker}
+                  is24Hour={true}
+                  display="default"
+                  onChange={changeSelectedDate}
+                />
+              )}
+            </View>
+          </View>
+          <View style={styles.group}>
+            <SubHeading style={styles.title}>Nationality:</SubHeading>
+            <TextInput style={styles.input}
+              placeholder="Ex. Thai"
+              value={nationality}
+              onChangeText={(nationality) => setNationality(nationality)}
+            />
+          </View>
+          <View style={styles.center}>
+            <View style={styles.group}>
+              <TouchableOpacity style={styles.button} onPress={() => {doSubmit()}}>
+                <Text style={styles.buttonText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={{padding: 30}} />
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -177,3 +206,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
+
+export default UserInfo;

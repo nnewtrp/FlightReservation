@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
       isLoggedIn: false,
       haveUserInfo: false,
       UserInfoData: null,
-      thisUserInfoKey: null,
+      thisUserInfo: null,
     };
     // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
@@ -103,7 +103,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <TouchableHighlight
             underlayColor='#BBBBBB'
-            onPress={() => this.props.navigation.navigate('FlightSearch')}
+            onPress={() => this.props.navigation.navigate('FlightSearch',{user: this.state.thisUserInfo})}
             style={styles.button}
           >
             <View style={styles.buttonRow}>
@@ -181,7 +181,8 @@ export default class HomeScreen extends React.Component {
     console.log(userInfoCheck);
     if (userInfoCheck[0]) {
       this.submitSuccess(true);
-      this.setState({ thisUserInfoKey: userInfoCheck[0] })
+      this.setState({ thisUserInfo: this.state.UserInfoData[userInfoCheck[0]] });
+      console.log(this.state.thisUserInfo);
     } else {
       this.submitSuccess(false);
     }

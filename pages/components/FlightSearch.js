@@ -56,26 +56,32 @@ function FlightSearch(props) {
           <Text style={styles.title}>From:</Text>
           <AutocompleteDropdown
             clearOnFocus={false}
-            closeOnBlur={true}
+            closeOnBlur={false}
             useFilter={false}
             closeOnSubmit={false}
             onChangeText={(text) => searchAirportFrom(text)}
             emptyResultText="Nothing Found"
             onSelectItem={setFrom}
             dataSet={filterAirportFromList}
+            textInputProps={{
+              placeholder: "Type 3+ letters",
+            }}
           />
         </View>
         <View style={styles.group}>
           <Text style={styles.title}>To:</Text>
           <AutocompleteDropdown
             clearOnFocus={false}
-            closeOnBlur={true}
+            closeOnBlur={false}
             useFilter={false}
             closeOnSubmit={false}
             onChangeText={(text) => searchAirportTo(text)}
             emptyResultText="Nothing Found"
             onSelectItem={setTo}
             dataSet={filterAirportToList}
+            textInputProps={{
+              placeholder: "Type 3+ letters",
+            }}
           />
         </View>
         <View style={styles.group}>

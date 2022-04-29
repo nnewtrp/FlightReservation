@@ -34,14 +34,6 @@ export default class SignupLogin extends React.Component {
       console.log("login successful");
       console.log(auth.currentUser.email);
       this.props.loginCB();
-      // const keys = this.props.UserData ? Object.keys(this.props.UserData) : [];
-      // const userInfoCheck = keys.filter((key) => this.props.UserData[key].email.includes(auth.currentUser.email));
-      // console.log(userInfoCheck);
-      // if (userInfoCheck[0]) {
-      //   this.props.submitCB(true);
-      // } else {
-      //   this.props.submitCB(false);
-      // }
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -53,8 +45,6 @@ export default class SignupLogin extends React.Component {
   }
 
   doSignup() {
-    // https://firebase.google.com/docs/auth/web/password-auth
-
     // check if the two password fields match
     const password = this.state.password;
     const confirmPassword = this.state.confirmPassword;

@@ -37,6 +37,9 @@ import AirlineDetailScreen from './pages/AirlineDetailScreen';
 
 import FlightSearchScreen from './pages/FlightSearchScreen';
 
+import FlightListScreen from './pages/FlightListScreen';
+import FlightDetailScreen from './pages/FlightDetailScreen';
+
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
@@ -62,7 +65,35 @@ export default class App extends React.Component {
             name="FlightSearch"
             component={FlightSearchScreen}
             options={{
-              title: 'Flight Search',
+              title: 'New Flight Booking',
+              headerStyle: {
+                backgroundColor: '#48D0FB',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="FlightList"
+            component={FlightListScreen}
+            options={{
+              title: 'Flight Booking History',
+              headerStyle: {
+                backgroundColor: '#48D0FB',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="FlightDetail"
+            component={FlightDetailScreen}
+            options={{
+              title: 'Flight Details',
               headerStyle: {
                 backgroundColor: '#48D0FB',
               },

@@ -106,6 +106,7 @@ export default class AirportDetailScreen extends React.Component {
               <Text style={{fontWeight:'bold'}}>ICAO Code: &ensp;</Text>
               {icao_code}
             </Text>
+            <View style={{padding: 30}} />
           </ScrollView>
         </View>
       </View>

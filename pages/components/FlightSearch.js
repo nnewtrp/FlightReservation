@@ -9,24 +9,27 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import { Heading, SubHeading, Margin, RadioButton, RadioButtonItem } from 'react-native-sketchbook'
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, onValue, get, push, set } from 'firebase/database';
+import { getAuth } from "firebase/auth";
 
 function FlightSearch(props) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [departure, setdeparture] = useState(new Date());
+  const [departure, setDeparture] = useState(new Date());
+  const [airline, setAirline] = useState('');
   
   const [openDatePicker, setDatePicker] = useState(false);
   const [filterAirportFromList, setFilterAirportFromList] = useState([]);
   const [filterAirportToList, setFilterAirportToList] = useState([]);
+  const [filterAirlineList, setFilterAirlineList] = useState([]);
 
   const changeSelectedDate = (event, selectedDate) => {
     if(selectedDate) {
       const currentDate = selectedDate;
-      setdeparture(currentDate);
+      setDeparture(currentDate);
       setDatePicker(false);
     } else {
-      setdeparture(departure);
+      setDeparture(departure);
       setDatePicker(false);
     }
   };
@@ -49,6 +52,48 @@ function FlightSearch(props) {
       setFilterAirportToList(List.slice(0,5));
     }
   };
+
+  const getAirlineList = require("../data/airlines_res.json").airlines.filter(
+    (airline) => airline.hasOwnProperty("iata_code") && airline.hasOwnProperty("icao_code"));
+
+  function searchAirline(text) {
+    if (text.length >= 3) {
+      const airlineList = getAirlineList.map(({ iata_code: id, name: title }) => ({ id, title }));
+      const List = airlineList.filter((airline) => airline.title.includes(text));
+      setFilterAirlineList(List.slice(0,5));
+    }
+  };
+
+  function _writeDB() {
+    push(ref(getDatabase(), 'booking/'), {
+      from: from,
+      to: to,
+      departureDate: moment(departure).format('DD/MM/YYYY').toString(),
+      airline: airline,
+      passenger: props.user
+    })
+    .then(() => {
+      // Data saved successfully!
+      console.log("Store data success")
+    })
+    .catch((error) => {
+      // The write failed...
+      console.log("Store Error")
+    });
+    setFrom('');
+    setTo('');
+    setDeparture(new Date());
+    setAirline('');
+  }
+
+  function doConfirm() {
+    if (from && to && departure && airline) {
+      _writeDB()
+      props.navigation.goBack()
+    } else {
+      alert("Please fill in the flight information");
+    }
+  }
 
   return (
       <View>
@@ -105,11 +150,27 @@ function FlightSearch(props) {
             )}
           </View>
         </View>
+        <View style={styles.group}>
+          <Text style={styles.title}>Airline:</Text>
+          <AutocompleteDropdown
+            clearOnFocus={false}
+            closeOnBlur={false}
+            useFilter={false}
+            closeOnSubmit={false}
+            onChangeText={(text) => searchAirline(text)}
+            emptyResultText="Nothing Found"
+            onSelectItem={setAirline}
+            dataSet={filterAirlineList}
+            textInputProps={{
+              placeholder: "Type 3+ letters",
+            }}
+          />
+        </View>
         <View style={styles.center}>
           <View style={styles.group}>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#48D0FB'}]}
-              onPress={() => {console.log(from, to)}}>
-              <Text style={styles.buttonText}>Search</Text>
+              onPress={() => {doConfirm()}}>
+              <Text style={styles.buttonText}>Confirm</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -136,7 +197,10 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     height: 40,
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: '#e6edf3',
+    borderRadius: 5,
+    borderWidth: 0,
   },
   center: {
     alignItems: 'center'

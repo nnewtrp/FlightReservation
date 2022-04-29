@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 5,
     backgroundColor: "#FFFFFF",
+    borderRadius: 10,
   },
   buttonRow : {
     flexDirection: 'row',
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 80,
     resizeMode: "stretch",
+    borderRadius: 5,
   },
   buttonTitle: {
     fontSize: 18,

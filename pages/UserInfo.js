@@ -31,40 +31,40 @@ function UserInfo(props) {
     }
   };
 
- function _writeDB() {
-  push(ref(getDatabase(), 'userinfo/'), {
-    email: getAuth().currentUser.email,
-    titlename: titlename,
-    firstname: firstname,
-    lastname: lastname,
-    phone: phone,
-    DOB: moment(DOB).format('DD/MM/YYYY').toString(),
-    nationality: nationality,
-  })
-  .then(() => {
-    // Data saved successfully!
-    console.log("Store data success")
-  })
-  .catch((error) => {
-    // The write failed...
-    console.log("Store Error")
-  });
-  setTitlename('');
-  setFirstname('');
-  setLastname('');
-  setPhone('');
-  setDOB(new Date());
-  setNationality('');
-}
-
- function doSubmit() {
-  if (titlename && firstname && lastname && phone && DOB && nationality) {
-    _writeDB()
-    props.submitCB(true);
-  } else {
-    alert("Please fill in your information");
+  function _writeDB() {
+    push(ref(getDatabase(), 'userinfo/'), {
+      email: getAuth().currentUser.email,
+      titlename: titlename,
+      firstname: firstname,
+      lastname: lastname,
+      phone: phone,
+      DOB: moment(DOB).format('DD/MM/YYYY').toString(),
+      nationality: nationality,
+    })
+    .then(() => {
+      // Data saved successfully!
+      console.log("Store data success")
+    })
+    .catch((error) => {
+      // The write failed...
+      console.log("Store Error")
+    });
+    setTitlename('');
+    setFirstname('');
+    setLastname('');
+    setPhone('');
+    setDOB(new Date());
+    setNationality('');
   }
- }
+
+  function doSubmit() {
+    if (titlename && firstname && lastname && phone && DOB && nationality) {
+      _writeDB()
+      props.submitCB(true);
+    } else {
+      alert("Please fill in your information");
+    }
+  }
 
   return (
     <View style={styles.containerForm}>
@@ -182,7 +182,10 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     height: 40,
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: '#E5E4E3',
+    borderRadius: 5,
+    borderWidth: 0,
   },
   radio: {
     flexDirection:'row',
@@ -203,7 +206,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: 'center',
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   }
 });
 

@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component {
       haveUserInfo: false,
       UserInfoData: null,
       thisUserInfo: null,
+      thisUserName: '',
     };
     // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
@@ -97,14 +98,14 @@ export default class HomeScreen extends React.Component {
     return (
       <>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Hi, Teerapat</Text>
+          <Text style={styles.title}>Hi, {this.state.thisUserName}</Text>
           <Text style={styles.currentPlace}>{this.state.city}, {this.state.country}</Text>
         </View>
         <View style={styles.container}>
           <TouchableHighlight
             underlayColor='#BBBBBB'
             onPress={() => this.props.navigation.navigate('FlightSearch',{user: this.state.thisUserInfo})}
-            style={styles.button}
+            style={[styles.button, {backgroundColor: '#1EB8FA'}]}
           >
             <View style={styles.buttonRow}>
               <Image style={styles.buttonImage} source={require('./images/booking_button.jpg')} />
@@ -113,10 +114,9 @@ export default class HomeScreen extends React.Component {
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor='#BBBBBB'
-            onPress={() => console.log("History")}
-            style={styles.button}>
-            <View style={styles.buttonRow}
-          >
+            onPress={() => this.props.navigation.navigate('FlightList',{user: this.state.thisUserInfo})}
+            style={[styles.button, {backgroundColor: '#EA7838'}]}>
+            <View style={styles.buttonRow}>
               <Image style={styles.buttonImage} source={require('./images/history_button.webp')} />
               <Text style={styles.buttonTitle}>History</Text>
             </View>
@@ -125,7 +125,7 @@ export default class HomeScreen extends React.Component {
             <TouchableHighlight
               underlayColor='#BBBBBB'
               onPress={() => this.props.navigation.navigate('FindAirport',{location: this.state.location, country: this.state.country})}
-              style={styles.subButton}
+              style={[styles.subButton,{backgroundColor: '#2F80ED'}]}
             >
               <View style={styles.subButtonColumn}>
                 <Image style={styles.subButtonImage} source={require('./images/airport_button.jpg')} />
@@ -135,7 +135,7 @@ export default class HomeScreen extends React.Component {
             <TouchableHighlight
               underlayColor='#BBBBBB'
               onPress={() => this.props.navigation.navigate('FindAirline',{location: this.state.location, country: this.state.country})}
-              style={styles.subButton}
+              style={[styles.subButton,{backgroundColor: '#27AE60'}]}
             >
               <View style={styles.subButtonColumn}>
                 <Image style={styles.subButtonImage} source={require('./images/airline_button.png')} />
@@ -181,7 +181,10 @@ export default class HomeScreen extends React.Component {
     console.log(userInfoCheck);
     if (userInfoCheck[0]) {
       this.submitSuccess(true);
-      this.setState({ thisUserInfo: this.state.UserInfoData[userInfoCheck[0]] });
+      this.setState({
+        thisUserInfo: this.state.UserInfoData[userInfoCheck[0]],
+        thisUserName: this.state.UserInfoData[userInfoCheck[0]].firstname
+      });
       console.log(this.state.thisUserInfo);
     } else {
       this.submitSuccess(false);
@@ -215,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'right',
     flex: 1,
+    marginTop: 4
   },
   // Button
   container: {
@@ -228,7 +232,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 40,
     height: 160,
     marginVertical: 5,
-    backgroundColor: "#DDDDDD",
+    borderRadius: 10
   },
   buttonRow : {
     flexDirection: 'row',
@@ -238,14 +242,16 @@ const styles = StyleSheet.create({
   buttonImage: {
     flex: 3,
     height: 160,
+    borderRadius: 10,
   },
   buttonTitle: {
     fontSize: 40,
     flex: 5,
     padding: 20,
-    // borderWidth: 1,
     textAlign: 'center',
     paddingVertical: 50,
+    fontWeight: 'bold',
+    color: 'white'
   },
   // Sub Button
   subContainer: {
@@ -257,17 +263,18 @@ const styles = StyleSheet.create({
   subButtonColumn : {
     flexDirection: 'column',
     height: 100,
-    flex: 1
+    flex: 1,
   },
   subButton: {
     width: (Dimensions.get("window").width - 20)/2 - 10,
     height: 160,
     marginVertical: 5,
-    backgroundColor: "#DDDDDD",
+    borderRadius: 10,
   },
   subButtonImage: {
     flex: 4,
     width: (Dimensions.get("window").width - 20)/2 - 10,
+    borderRadius: 10,
   },
   subButtonTitle: {
     fontSize: 20,
@@ -276,5 +283,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     textAlign: 'center',
     paddingVertical: 2,
+    fontWeight: 'bold',
+    color: 'white'
   },
 });

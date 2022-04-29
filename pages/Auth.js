@@ -215,7 +215,10 @@ const styles = StyleSheet.create({
   input: {
     padding: 10,
     height: 40,
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: '#E5E4E3',
+    borderRadius: 5,
+    borderWidth: 0,
   },
   title: {
     fontSize: 20

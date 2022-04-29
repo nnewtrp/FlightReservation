@@ -26,9 +26,9 @@ export default class FlightSearchScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={{flex:1}}>
           <View style={styles.group}>
-            <Text style={styles.title}>One-Way Flight Search</Text>
+            <Text style={styles.title}>One-Way Flight</Text>
           </View>
-          <FlightSearch user={this.state.user} />
+          <FlightSearch user={this.state.user} navigation={this.props.navigation} />
           <View style={{padding: 30}} />
         </ScrollView>
       </View>

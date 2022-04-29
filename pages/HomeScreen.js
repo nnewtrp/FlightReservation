@@ -121,6 +121,10 @@ export default class HomeScreen extends React.Component {
               <Text style={styles.buttonTitle}>History</Text>
             </View>
           </TouchableHighlight>
+          <View style={{flexDirection: 'row', marginVertical: 10}}>
+            <Text style={{flex: 1, fontSize: 24, fontWeight: 'bold', textAlign: 'left'}}>Search</Text>
+            <View style={{flex: 3, height: 2, backgroundColor: 'black', marginVertical: 16}} />
+          </View>
           <View style={styles.subContainer}>
             <TouchableHighlight
               underlayColor='#BBBBBB'

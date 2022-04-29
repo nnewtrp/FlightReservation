@@ -3,9 +3,7 @@ import { Platform, StyleSheet, Text, View,
   TouchableHighlight, TextInput, Image, Alert,
   ScrollView, Dimensions, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-import { Margin } from 'react-native-sketchbook';
+import MapView from 'react-native-maps';
 import { SliderBox } from "react-native-image-slider-box";
 
 import AirportDataAPI from './api/AirportDataAPI';
@@ -15,9 +13,21 @@ export default class AirportDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    const { res_data } = this.props.route.params;
     this.state = {
       airportData: {},
       image: [],
+      region: {
+        latitude: res_data.lat,
+        longitude: res_data.lng,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      },
+      marker: {
+        latlng: {latitude: res_data.lat, longitude: res_data.lng},
+        title: res_data.name,
+        description: "[" + res_data.lat + ", " + res_data.lng + "]",
+      },
     };
   }
 
@@ -77,7 +87,6 @@ export default class AirportDetailScreen extends React.Component {
     const iata_code = res_data.hasOwnProperty("iata_code") ? res_data.iata_code : "-";
     const icao_code = res_data.hasOwnProperty("icao_code") ? res_data.icao_code : "-";
     const airportName = this.state.airportData.hasOwnProperty("name") ? this.state.airportData.name : res_data.name;
-
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
@@ -106,6 +115,30 @@ export default class AirportDetailScreen extends React.Component {
               <Text style={{fontWeight:'bold'}}>ICAO Code: &ensp;</Text>
               {icao_code}
             </Text>
+            <Text style={[styles.detailText, {fontWeight:'bold'}]}>
+              Map Location
+            </Text>
+            <View style={{backgroundColor: 'white', height: 260}}>
+              <MapView
+                style={styles.map}
+                region={this.state.region}
+                onRegionChangeComplete={() => this.refs[this.state.marker.title].showCallout()}
+              >
+                <MapView.Marker
+                  coordinate={this.state.marker.latlng}
+                  title={this.state.marker.title}
+                  description={this.state.marker.description}
+                  ref={this.state.marker.title}
+                >
+                  <MapView.Callout>
+                    <View style={styles.callout}>
+                      <Text style={styles.calloutTitle}>{this.state.marker.title}</Text>
+                      <Text style={{textAlign: 'center'}} >{this.state.marker.description}</Text>
+                    </View>
+                  </MapView.Callout>
+                </MapView.Marker>
+              </MapView>
+            </View>
             <View style={{padding: 30}} />
           </ScrollView>
         </View>
@@ -144,4 +177,19 @@ const styles = StyleSheet.create({
     height: 24,
     resizeMode: "contain",
   },
+  map: {
+    width: Dimensions.get("window").width -20,
+    height: 250,
+    margin: 5
+  },
+  callout:{
+    flex: 1,
+    marginHorizontal: 5,
+    marginBottom: 5
+  },
+  calloutTitle:{
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  }
 });

@@ -33,7 +33,6 @@ export default class HomeScreen extends React.Component {
       thisUserInfo: null,
       thisUserName: '',
     };
-    // this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
     this.submitSuccess = this.submitSuccess.bind(this);
     this._readDB();

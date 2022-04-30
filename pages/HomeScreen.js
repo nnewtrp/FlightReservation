@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor='#BBBBBB'
-            onPress={() => this.props.navigation.navigate('FlightList',{user: this.state.thisUserInfo})}
+            onPress={() => this.props.navigation.navigate('BookingList',{user: this.state.thisUserInfo})}
             style={[styles.button, {backgroundColor: '#EA7838'}]}>
             <View style={styles.buttonRow}>
               <Image style={styles.buttonImage} source={require('./images/history_button.webp')} />

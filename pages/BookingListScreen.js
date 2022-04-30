@@ -5,9 +5,9 @@ import { Platform, StyleSheet, Text, View,
 
 import { getDatabase, ref, onValue, get, push, set } from 'firebase/database';
 
-import Flight from './components/Flight';
+import Booking from './components/Booking';
 
-export default class FlightListScreen extends React.Component {
+export default class BookingListScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -48,7 +48,7 @@ export default class FlightListScreen extends React.Component {
         <ScrollView style={{flex:1}}>
           {this.state.thisUserBooking.map((res_data,i) => {
             return (
-              <Flight
+              <Booking
                 key={i}
                 res_data={res_data}
                 navigation={this.props.navigation}

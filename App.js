@@ -37,8 +37,8 @@ import AirlineDetailScreen from './pages/AirlineDetailScreen';
 
 import FlightSearchScreen from './pages/FlightSearchScreen';
 
-import FlightListScreen from './pages/FlightListScreen';
-import FlightDetailScreen from './pages/FlightDetailScreen';
+import BookingListScreen from './pages/BookingListScreen';
+import BookingDetailScreen from './pages/BookingDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -76,8 +76,8 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
-            name="FlightList"
-            component={FlightListScreen}
+            name="BookingList"
+            component={BookingListScreen}
             options={{
               title: 'Flight Booking History',
               headerStyle: {
@@ -90,10 +90,10 @@ export default class App extends React.Component {
             }}
           />
           <Stack.Screen
-            name="FlightDetail"
-            component={FlightDetailScreen}
+            name="BookingDetail"
+            component={BookingDetailScreen}
             options={{
-              title: 'Flight Details',
+              title: 'Booking Details',
               headerStyle: {
                 backgroundColor: '#48D0FB',
               },

@@ -6,12 +6,11 @@ import { Platform, StyleSheet, Text, View,
 import { Margin } from 'react-native-sketchbook';
 import { SliderBox } from "react-native-image-slider-box";
 
-export default class AirlineDetailScreen extends React.Component {
+export default class BookingDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      airlineData: {},
       image: [],
     };
   }

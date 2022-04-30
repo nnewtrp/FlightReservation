@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, Dimensions } from 'react-native';
 
-function Flight(props) {
+function Booking(props) {
   const [onError, setOnError] = useState(false);
   const airline = require("../data/airlines_res.json").airlines.filter((airline) => airline.hasOwnProperty("iata_code")
                   && airline.iata_code.includes(props.res_data.airline.id))
@@ -12,7 +12,7 @@ function Flight(props) {
   return (
     <TouchableHighlight
       onPress={()=>{
-        props.navigation.navigate('FlightDetail',{
+        props.navigation.navigate('BookingDetail',{
           res_data: props.res_data,
           onError: onError,
         });
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Flight;
+export default Booking;

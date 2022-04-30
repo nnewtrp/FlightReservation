@@ -98,7 +98,13 @@ export default class HomeScreen extends React.Component {
       <>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Hi, {this.state.thisUserName}</Text>
-          <Text style={styles.currentPlace}>{this.state.city}, {this.state.country}</Text>
+          <Text style={styles.currentPlace}>
+            {this.state.city}&nbsp;
+            <Image
+              source={{uri:"https://flagpedia.net/data/flags/h120/" + this.state.country.toLowerCase() + ".png"}}
+              style={styles.countryFlag}
+            />
+          </Text>
         </View>
         <View style={styles.container}>
           <TouchableHighlight
@@ -288,5 +294,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     fontWeight: 'bold',
     color: 'white'
+  },
+  countryFlag: {
+    width: 20,
+    height: 15,
+    resizeMode: "contain",
   },
 });

@@ -124,6 +124,7 @@ function UserInfo(props) {
                   is24Hour={true}
                   display="default"
                   onChange={changeSelectedDate}
+                  maximumDate={new Date()}
                 />
               )}
             </View>

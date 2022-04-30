@@ -146,6 +146,7 @@ function FlightSearch(props) {
                 is24Hour={true}
                 display="default"
                 onChange={changeSelectedDate}
+                minimumDate={new Date()}
               />
             )}
           </View>

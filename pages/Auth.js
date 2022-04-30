@@ -102,10 +102,15 @@ export default class SignupLogin extends React.Component {
               <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
           </View>
-          <View style={{width: Dimensions.get("window").width - 40, height: 1, backgroundColor: 'black', marginBottom: 10, marginTop: 30}} />
+          <View style={{flexDirection: 'row', marginTop: 30}}>
+            <View style={styles.divider} />
+            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10, flex: 4, marginTop: 15}]}>
+              Already have an account?
+            </Text>
+            <View style={styles.divider} />
+          </View>
           <View style={styles.group}>
-            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10}]}>Already have an account?</Text>
-            <TouchableOpacity style={[styles.button, {backgroundColor: '#48D0FB'}]}
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#48D0FB', marginTop: 0}]}
               onPress={() => {this.toggleShowLogin();}}>
               <Text style={styles.buttonText}>Go To Login Page</Text>
             </TouchableOpacity>
@@ -142,10 +147,15 @@ export default class SignupLogin extends React.Component {
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
-          <View style={{width: Dimensions.get("window").width - 40, height: 1, backgroundColor: 'black', marginBottom: 10, marginTop: 30}} />
+          <View style={{flexDirection: 'row', marginTop: 30}}>
+            <View style={styles.divider} />
+            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10, flex: 4, marginTop: 15}]}>
+              Already have an account?
+            </Text>
+            <View style={styles.divider} />
+          </View>
           <View style={styles.group}>
-            <Text style={[styles.title, {fontSize: 18, textAlign: 'center', marginBottom: 10}]}>Don't have any account?</Text>
-            <TouchableOpacity style={[styles.button, {backgroundColor: '#EA7838'}]}
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#EA7838', marginTop: 0}]}
               onPress={() => {this.toggleShowSignup();}}>
               <Text style={styles.buttonText}>Go To Signup Page</Text>
             </TouchableOpacity>
@@ -190,9 +200,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    // backgroundColor: 'lightblue',
     padding: 15,
-    // borderWidth: 1,
     borderRadius: 30,
     width: Dimensions.get("window").width - 40,
   },
@@ -215,5 +223,13 @@ const styles = StyleSheet.create({
   },
   center: {
     alignItems: 'center'
+  },
+  divider: {
+    flex: 1,
+    width: Dimensions.get("window").width - 40,
+    height: 1,
+    backgroundColor: 'black',
+    // marginBottom: 10,
+    marginTop: 30
   },
 });

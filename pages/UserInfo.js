@@ -121,7 +121,6 @@ function UserInfo(props) {
                 <DateTimePicker
                   value={DOB}
                   mode={openDatePicker}
-                  is24Hour={true}
                   display="default"
                   onChange={changeSelectedDate}
                   maximumDate={new Date()}

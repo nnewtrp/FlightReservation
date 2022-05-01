@@ -40,7 +40,7 @@ function FlightSearch(props) {
   function searchAirportFrom(text) {
     if (text.length >= 3) {
       const airportList = getAirportList.map(({ iata_code: id, name: title }) => ({ id, title }));
-      const List = airportList.filter((airport) => airport.title.includes(text));
+      const List = airportList.filter((airport) => airport.title.toLowerCase().includes(text.toLowerCase()));
       setFilterAirportFromList(List.slice(0,5));
     }
   };
@@ -48,7 +48,7 @@ function FlightSearch(props) {
   function searchAirportTo(text) {
     if (text.length >= 3) {
       const airportList = getAirportList.map(({ iata_code: id, name: title }) => ({ id, title }));
-      const List = airportList.filter((airport) => airport.title.includes(text));
+      const List = airportList.filter((airport) => airport.title.toLowerCase().includes(text.toLowerCase()));
       setFilterAirportToList(List.slice(0,5));
     }
   };
@@ -59,7 +59,7 @@ function FlightSearch(props) {
   function searchAirline(text) {
     if (text.length >= 3) {
       const airlineList = getAirlineList.map(({ iata_code: id, name: title }) => ({ id, title }));
-      const List = airlineList.filter((airline) => airline.title.includes(text));
+      const List = airlineList.filter((airline) => airline.title.toLowerCase().includes(text.toLowerCase()));
       setFilterAirlineList(List.slice(0,5));
     }
   };
@@ -143,7 +143,6 @@ function FlightSearch(props) {
               <DateTimePicker
                 value={departure}
                 mode={openDatePicker}
-                is24Hour={true}
                 display="default"
                 onChange={changeSelectedDate}
                 minimumDate={new Date()}

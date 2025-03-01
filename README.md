@@ -74,7 +74,7 @@ For additional details about the technologies used in this project, check out th
 
 ## 📬 More Information  
 
-This project was developed as part of the **ITS432 - Mobile Application Programming** coursework at **Sirindhorn International Institute of Technology, Thammasat University**.
+This project was developed as the **final project** for **ITS432 - Mobile Application Programming** at **Sirindhorn International Institute of Technology, Thammasat University**.
 
 📧 Contact: teerapat.sat24@gmail.com
 

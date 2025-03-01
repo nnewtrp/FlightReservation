@@ -39,8 +39,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the Repository**  
   ```sh
-  git clone https://github.com/yourusername/flight-reservation-app.git
-  cd flight-reservation-app
+  git clone https://github.com/nnewtrp/FlightReservation.git
+  cd FlightReservation
   ```
 
 2. **Install Dependencies**

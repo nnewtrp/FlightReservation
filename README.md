@@ -1,6 +1,6 @@
-# ✈️ Flight Reservation Mobile Application
+# ✈️ TICKETA - Flight Reservation
 
-This is a mobile application for **flight reservations** built with **React Native, Expo, and Firebase**. The app allows users to search for flights, view booking history, search for airlines and airports, and access relevant information.  
+TICKETA is a mobile application for **flight reservations** built with **React Native, Expo, and Firebase**. The app allows users to search for flights, view booking history, search for airlines and airports, and access relevant information.  
 
 ---
 
